@@ -1,0 +1,38 @@
+
+<div class="loginForm">
+<mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>{{ editMode ? 'Edit Contact' : 'Add Contact' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form name="contactForm" #f="ngForm" class="example-form">
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+              <input type="email" matInput placeholder="Email Address"
+                    [(ngModel)]="contact.emailAddress" name="emailAddress" email="true" [ngClass]="{disabledInput: editMode}" required>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+          <td><mat-form-field class="example-full-width">
+            <input matInput placeholder="First Name"  [(ngModel)]="contact.firstName" name="firstName" required>
+          </mat-form-field></td>
+        </tr>
+        <tr>
+            <td><mat-form-field class="example-full-width">
+              <input matInput placeholder="Last Name"  [(ngModel)]="contact.lastName" name="lastName" required>
+            </mat-form-field></td>
+          </tr>
+      </table>
+      </form>
+      <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" [disabled]="f.invalid" (click)="onSubmit()">{{ editMode ? 'Edit Contact' : 'Add Contact' }}</button>
+      <button *ngIf="editMode" mat-raised-button (click)="onCanel()" color="primary">Cancel</button>
+    </mat-card-actions>
+
+  </mat-card>
+</div>
