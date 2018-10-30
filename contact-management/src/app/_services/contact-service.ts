@@ -5,6 +5,7 @@ import { Store, State } from '@ngrx/store';
 import { Contact } from '../_models/contact';
 import { AppStore } from '../app.store';
 import { LocalStorage } from '@ngx-pwa/local-storage';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class ContactService {
@@ -14,7 +15,8 @@ export class ContactService {
     updateContact: Object;
 
     constructor( private store: Store<AppStore>,
-                 protected localStorage: LocalStorage ) {
+                 protected localStorage: LocalStorage,
+                 private toastrService: ToastrService ) {
         this.contacts = store.select( (state) =>  state.contacts );
     }
 
@@ -28,20 +30,23 @@ export class ContactService {
               data.push(user);
             this.localStorage.setItem('user', data).subscribe(() => {
               this.store.dispatch({ type: 'ADD_CONTACTS', payload: user });
+              this.toastrService.success('Contact added successfully');
             });
 
           } else {
-
+            this.toastrService.success('Email Address already exit');
           }
         } else {
             this.localStorage.setItem('user', [user]).subscribe(() => {
               this.store.dispatch({ type: 'ADD_CONTACTS', payload: user });
+              this.toastrService.success('Contact added successfully');
 
             });
           }
 
         }, (error) => {
           // Called if data is invalid
+          this.toastrService.error('Problem to add Contact');
         });
     }
 
@@ -68,10 +73,14 @@ export class ContactService {
                         data[index] = user;
                         this.localStorage.setItem('user', data).subscribe(() => {
                           this.store.dispatch({ type: 'UPDATE_CONTACTS', payload: user });
+                          this.toastrService.success('Contact edited successfully');
                           });
                       }
                    });
-                  });
+                }, (error) => {
+                  // Called if data is invalid
+                  this.toastrService.error('Problem to edit Contact');
+                });
 
     }
 
@@ -83,8 +92,12 @@ export class ContactService {
                     data.splice(index, 1);
                     this.localStorage.setItem('user', data).subscribe(() => {
                       this.store.dispatch({ type: 'DELETE_CONTACT', payload: user });
+                      this.toastrService.success('Contact deleted successfully');
                       });
-                  });
+                    }, (error) => {
+                      // Called if data is invalid
+                      this.toastrService.error('Problem to delete Contact');
+                    });
 
     }
 }

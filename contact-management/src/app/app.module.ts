@@ -14,6 +14,7 @@ import { TruncatePipe } from './_custom_pipes/truncate-text.pipe';
 import 'hammerjs';
 
 import { MaterialModule } from './core/material/material.module';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { MaterialModule } from './core/material/material.module';
     ContactListModule,
     BrowserAnimationsModule,
     MaterialModule,
+    ToastrModule.forRoot(),
     StoreModule.forRoot({
       // place for future reducers
       contacts
